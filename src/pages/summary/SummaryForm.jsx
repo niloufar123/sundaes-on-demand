@@ -12,7 +12,7 @@ function SummaryForm() {
           <Form.Check type="checkbox" label="terms and conditionst" />
         </Form.Group>
         <Button variant="primary" type="submit" name='submit' disabled={!enable}>
-          Submit
+        confirm order
         </Button>
       </Form>
     </Container>
