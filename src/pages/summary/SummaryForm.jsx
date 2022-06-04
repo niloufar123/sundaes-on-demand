@@ -1,34 +1,42 @@
-import { Form, Button, Container, Popover, Overlay } from "react-bootstrap";
+import { Form, Button, Container, Popover, Overlay, OverlayTrigger } from "react-bootstrap";
 
 import React, { useState } from "react";
 
 function SummaryForm() {
   const [enable, setEnable] = useState(false);
-  const [showPopUp, setShowPopUp] = useState(0);
+  const [showPopUp, setShowPopUp] = useState();
+
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Body>
+      no ice cream actually be delivered
+      </Popover.Body>
+    </Popover>
+  );
+  
+ 
+  const checkboxLabel = (
+    <span>
+      I agree to
+      <OverlayTrigger placement="right" overlay={popover}>
+        <span style={{ color: 'blue' }}> Terms and Conditions</span>
+      </OverlayTrigger>
+    </span>
+  );
+  
   return (
-    <Container>
+
       <Form>
         <Form.Group
           className="mb-3"
           controlId="formBasicCheckbox"
-          onChange={() => setEnable(!enable)}
+          
         >
-          <div className="form-check">
-            <input
-              type="checkbox"
-              id="default-checkbox"
-              className="form-check-input"
-            />
-            <label
-              title=""
-              htmlFor="default-checkbox"
-              className="form-check-label"
-              onMouseOver={() => setShowPopUp(1)}
-              onMouseLeave={() => setShowPopUp(0)}
-            >
-              terms and conditionst
-            </label>
-          </div>
+           <Form.Check
+          type="checkbox"
+          onChange={() => setEnable(!enable)}
+          label={checkboxLabel}
+        />
         </Form.Group>
         <Button
           variant="primary"
@@ -39,8 +47,7 @@ function SummaryForm() {
           confirm order
         </Button>
       </Form>
-      <div style={{ opacity: `${showPopUp}` }}>Popover testing</div>
-    </Container>
+ 
   );
 }
 

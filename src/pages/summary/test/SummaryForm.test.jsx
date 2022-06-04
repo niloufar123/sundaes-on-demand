@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen, waitForElementToBeRemoved } from "@testing-library/react"
 import SummaryForm from "../SummaryForm";
 import userEvent from '@testing-library/user-event'
 
@@ -18,21 +18,25 @@ test("check default checkBox value and click action",()=>{
 
 });
 
-test("popover responds to hover",()=>{
+test("popover responds to hover",async()=>{
     render(<SummaryForm />);
+
     //popover starts out hidden
-     const label=screen.getByLabelText("terms and conditionst");
-     const overlay=screen.getByText("Popover testing");
-     
-     expect(overlay).not.toBeVisible();
+     const nullPopover=screen.queryByText(/no ice cream actually be delivered/i);
+     expect(nullPopover).not.toBeInTheDocument();   
 
 
     //popover appears when mouseover of checkbox label
+    const termsAndConditions=screen.getByText(/terms and conditions/i);        
+    userEvent.hover(termsAndConditions);
 
-    userEvent.hover(label);
-    expect(overlay).toBeVisible();
+    const popover=screen.getByText(/no ice cream actually be delivered/i);
+    expect(popover).toBeInTheDocument();
 
     //popover disappears when mouse out
-    userEvent.unhover(label);
-    expect(overlay).not.toBeVisible();
+    userEvent.unhover(termsAndConditions);
+    await waitForElementToBeRemoved(()=>
+   screen.queryByText(/no ice cream actually be delivered/i)
+
+    )
 })
